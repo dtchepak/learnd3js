@@ -31,7 +31,8 @@ var scale = d3.scale.linear()
 
 var elems = d3.select("div.elements")
               .selectAll("span").data(data)
-              .enter().append("span").text(function (d) { return d + " (" + scale(d) + ") | "; });
+              .enter().append("span")
+                .text(function (d) { return d + " (" + scale(d) + ") | "; });
 
 var chart = d3.select("div.chart")
 
