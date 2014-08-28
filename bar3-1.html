@@ -26,15 +26,20 @@
 <svg id="mychart" class="chart"></svg>
 
 <script>
-var width  = 960,
-    height = 500;
+var outerWidth = 960, outerHeight = 500;
+var margin = { top: 20, right: 30, bottom: 30, left: 40 },
+    width  = outerWidth - margin.left - margin.right,
+    height = outerHeight - margin.top - margin.bottom;
+
 var x = d3.scale.ordinal()
           .rangeRoundBands([0, width], .1);
 var y = d3.scale.linear()
           .range([height, 0]);
 var chart = d3.select("#mychart")
-              .attr("width", width)
-              .attr("height", height);
+              .attr("width", outerWidth)
+              .attr("height", outerHeight)
+            .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 d3.tsv("data-chars.tsv", type, function(error, data) {
     x.domain(data.map(function(d) { return d.name; }));
