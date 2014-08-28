@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8" />
 <title>Bar charts 3</title>
 <script src="/d3/d3.min.js" charset="utf-8"></script>
 <style>
@@ -20,16 +21,7 @@
     From <a href="http://bost.ocks.org/mike/bar/3/">http://bost.ocks.org/mike/bar/3/</a>
 </div>
 
-<!--
-<svg class="chart" width="420" height="120">
-  <g transform="translate(0,0)">
-    <rect width="40" height="19"></rect>
-    <text x="37" y="9.5" dy=".35em">4</text>
-  </g>
-</svg>
--->
-
-<h1>My attempt</h1>
+<h1>Columns</h1>
 
 <svg id="mychart" class="chart"></svg>
 
@@ -42,7 +34,7 @@ var width = 420,
     height = 350;
 
 var scale = d3.scale.linear()
-              .range([0, height]);
+              .range([height, 0]);
 var chart = d3.select("#mychart")
               .attr("width", width)
               .attr("height", height);
@@ -57,14 +49,14 @@ d3.tsv("data.tsv", type, function(error, data) {
           .attr("transform", function(d, i) { return "translate(" + i*barSize + ",0)"; });
 
     bar.append("rect")
-        .attr("y", function(d) { return height - scale(d.value); })
-        .attr("height", compose(scale, lookup("value")))
+        .attr("y", compose(scale, lookup("value")))
+        .attr("height", function (d) { return height - scale(d.value); })
         .attr("width", barSize - 1);
     bar.append("text")
-        .attr("y", function(d) { return height - scale(d.value) + 3; })
-        .attr("x", barSize / 2)
+        .attr("y", function (d) { return scale(d.value) + 3; })
+        .attr("x", barSize - 5)
         .attr("dy", ".75em")
-        .text(lookup("value"));
+        .text(function (d) { return "" + d.value + " → " + Math.round(scale(d.value)); });
 });
 
 function type(d) {
